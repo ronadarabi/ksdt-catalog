@@ -1,0 +1,87 @@
+/* Basic Page Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* Navigation Bar 
+.navbar {
+    background-color: #333;
+    padding: 15px;
+    display: flex;
+    gap: 20px;
+}
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+.navbar a:hover {
+    text-decoration: underline;
+}*/
+
+/* Container Layout */
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+/* Sidebar Filters */
+.sidebar {
+    width: 250px;
+    padding: 20px;
+    background: white;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.sidebar label {
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+}
+.sidebar select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+/* Main Content */
+.content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+/* Sorting Dropdown */
+.sort-container {
+    margin-bottom: 15px;
+}
+.sort-container select {
+    padding: 8px;
+}
+
+/* Records Grid */
+.records-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+}
+
+/* Album Cards */
+.album {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 10px;
+}
+.album img {
+    width: 100%;
+    border-radius: 8px;
+}
+.album p {
+    font-size: 14px;
+    margin-top: 5px;
+}

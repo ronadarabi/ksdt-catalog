@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Records</title>
+    <link rel="stylesheet" href="assets/styles/all.css">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <a href="index.html">Home</a>
+        <a href="records.html">Records</a>
+        <a href="cds.html">CDs</a>
+    </div>
+
+    <div class="container">
+        <!-- Sidebar Filters -->
+        <aside class="sidebar">
+            <h3>Filter By</h3>
+
+            <label for="genre">Genre</label>
+            <select id="genre">
+                <option value="">All Genres</option>
+            </select>
+
+            <label for="decade">Decade</label>
+            <select id="decade">
+                <option value="">All Decades</option>
+            </select>
+
+            <label for="country">Country</label>
+            <select id="country">
+                <option value="">All Countries</option>
+            </select>
+
+            <label for="location">Location (Shelf)</label>
+            <select id="location">
+                <option value="">All Locations</option>
+            </select>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Sorting Dropdown -->
+            <div class="sort-container">
+                <label for="sort">Sort by:</label>
+                <select id="sort">
+                    <option value="artist">Artist (A-Z)</option>
+                    <option value="title">Title (A-Z)</option>
+                    <option value="releaseYearAsc">Release Year (Oldest to Newest)</option>
+                    <option value="releaseYearDesc">Release Year (Newest to Oldest)</option>
+                </select>
+            </div>
+
+            <!-- Records Grid -->
+            <div id="recordsGrid" class="records-grid"></div>
+        </main>
+    </div>
+
+    <script src="assets/scripts/records.js"></script>
+
+</body>
+</html>
