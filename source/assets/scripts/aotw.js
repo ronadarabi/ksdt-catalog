@@ -38,15 +38,14 @@ async function fetchAlbumOfTheWeek() {
 
         // Extract values safely
         const [sundayDate, title, artist, releaseYear, genres, country, RIYL, notableTracks, location, albumCoverUrl] = bestMatch;
-        const saturdayDate = new Date(new Date(sundayDate).getTime() + 6 * 86400000).toISOString().split("T")[0];
         // Update HTML
         document.getElementById("week").innerText = `${sundayDate} - ${new Date(new Date(sundayDate).getTime() + 6 * 86400000).toISOString().split("T")[0]}`;
         document.getElementById("title").innerText = `${title} - ${artist} (${releaseYear})`;
-        document.getElementById("genres").innerText = genres;
-        document.getElementById("country").innerText = country;
+        document.getElementById("genres").innerText = genres|| "N/A";
+        document.getElementById("country").innerText = country || "N/A";
         document.getElementById("RIYL").innerText = RIYL || "N/A";
         document.getElementById("notableTracks").innerText = notableTracks || "N/A";
-        document.getElementById("location").innerText = location;
+        document.getElementById("location").innerText = location || "This album is not in our collection but is recommended by staff!";
         document.getElementById("albumCover").src = albumCoverUrl || "https://via.placeholder.com/300";
 
     } catch (error) {
