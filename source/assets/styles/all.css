@@ -181,3 +181,21 @@ label {
     border-color: black; /* Make it pop when focused */
     background: #fff; /* Light background when typing */
 }
+
+#search-riyl {
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: inherit; /* Matches text color */
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out;
+    width: 200px; /* Adjust width to match dropdowns */
+    border: 1px solid #ccc; /* Subtle border for contrast */
+}
+
+#search-riyl:focus {
+    outline: none;
+    border-color: black; /* Make it pop when focused */
+    background: #fff; /* Light background when typing */
+}

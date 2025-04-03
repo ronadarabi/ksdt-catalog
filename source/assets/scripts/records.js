@@ -44,25 +44,31 @@ function displayRecords(records) {
         albumDiv.dataset.index = index; // Store index for retrieval
 
         const img = document.createElement("img");
-        img.src = record.albumCoverUrl;
+        img.src = record.albumCoverUrl || "https://iili.io/HlHy9Yx.png";
         img.alt = `${record.title} - ${record.artist}`;
-        img.onerror = () => (img.src = "fallback.jpg");
+        img.onerror = () => (img.src = "https://iili.io/HlHy9Yx.png");
 
         const text = document.createElement("p");
-        text.textContent = `${record.title} - ${record.artist} (${record.releaseYear})`;
+        text.textContent = `${record.title} - ${record.artist} (${record.releaseYear || "unknown"})`;
 
         albumDiv.appendChild(img);
         albumDiv.appendChild(text);
-        albumDiv.addEventListener("click", () => openAlbumDetails(index));
+        albumDiv.addEventListener("click", () => openAlbumDetails(records,index));
 
         grid.appendChild(albumDiv);
     });
 }
 
 // Open Album Details Page
-function openAlbumDetails(index) {
-    localStorage.setItem("selectedAlbum", JSON.stringify(recordsData[index]));
+function openAlbumDetails(datas,index) {
+    localStorage.setItem("selectedAlbum", JSON.stringify(datas[index]));
     window.location.href = "album-details.html";
+}
+
+function sortAlphabetically(s) {
+    const arr = [...s];
+    arr.sort();
+    return arr;
 }
 
 // Populate Filters
@@ -77,12 +83,16 @@ function populateFilters() {
         record.riyl.forEach(similar => similarSet.add(similar));
     });
 
+    // Clean up sets
+    decadeSet.delete(NaN);
+
+    // Populate
     populateDropdown("genre", genreSet);
-    populateDropdown("decade", decadeSet, "s");
+    populateDropdown("decade", sortAlphabetically(decadeSet), "s");
     populateDropdown("country", countrySet);
     populateDropdown("location", locationSet);
     populateDropdown("format",formatSet);
-    populateDropdown("similar",similarSet);
+    populateDropdown("similar",sortAlphabetically(similarSet));
 }
 
 // Populate Dropdown Helper
@@ -109,6 +119,7 @@ function applyFilters() {
     const format = document.getElementById("format")?.value;
     const similar = document.getElementById("similar")?.value;
     const sortBy = document.getElementById("sort")?.value;
+    
 
 
     // Apply Search Filter (checks if searchQuery exists in title OR artist)
