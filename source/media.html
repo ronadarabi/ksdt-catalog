@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media</title>
+    <link rel="stylesheet" href="assets/styles/all.css">
+</head>
+<body>
+
+    <nav>
+        <a href="media.html" id="media">Media</a>
+        <a href="shuffle.html" id="shuffle">Shuffle</a>
+        <a href="aotw.html" id="aotw">AOTW</a>
+        <a href="about.html" id="about">About</a>
+    </nav>
+
+    <!-- Filter & Sort Row -->
+    <div id="filter-sort-container">
+        <p>Filter:</p>
+        <div id="filters">
+            <label for="format"></label>
+            <select id="format">
+                <option value="">Format</option>
+            </select>
+            <label for="genre"></label>
+            <select id="genre">
+                <option value="">Genre</option>
+            </select>
+
+            <label for="decade"></label>
+            <select id="decade">
+                <option value="">Decade</option>
+            </select>
+
+            <label for="country"></label>
+            <select id="country">
+                <option value="">Country</option>
+            </select>
+
+            <label for="location"></label>
+            <select id="location">
+                <option value="">Location</option>
+            </select>
+
+            <label for="search"></label>
+            <input type="text" id="search" placeholder="Search" />
+        </div>
+
+        <div id="sort-container">
+            <label for="sort">Sort by:</label>
+            <select id="sort">
+                <option value="artist">Artist, A-Z</option>
+                <option value="title">Title, A-Z</option>
+                <option value="releaseYearAsc">Date, old to new</option>
+                <option value="releaseYearDesc">Date, new to old</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Records Grid -->
+    <div id="recordsGrid" class="records-grid"></div>
+
+    <script src="assets/scripts/records.js"></script>
+    <script src="assets/scripts/navbar.js"></script>
+
+</body>
+</html>

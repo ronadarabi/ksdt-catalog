@@ -1,87 +1,183 @@
 /* Basic Page Styling */
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Neue Haas Grotesk", "Helvetica Neue", Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
 }
 
-/* Navigation Bar 
-.navbar {
-    background-color: #333;
-    padding: 15px;
+/* Navigation Bar */
+nav {
     display: flex;
-    gap: 20px;
+    justify-content: center; /* Centers items horizontally */
+    gap: 20px; /* Adds spacing between links */
+    padding: 15px;
 }
-.navbar a {
-    color: white;
+nav a {
+    color: black;
     text-decoration: none;
     font-size: 18px;
 }
-.navbar a:hover {
+
+nav a:hover {
     text-decoration: underline;
-}*/
+}
 
-/* Container Layout */
-.container {
+nav a.active { 
+    text-decoration: underline;
+}
+
+nav a.active:hover { 
+    text-decoration-thickness: 13%;
+}
+
+
+/* Filter & Sort Container - Seamless Styling */
+#filter-sort-container {
     display: flex;
-    max-width: 1200px;
-    margin: 20px auto;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    flex-wrap: wrap;  /* Ensures responsiveness */
+    gap: 10px;
 }
 
-/* Sidebar Filters */
-.sidebar {
-    width: 250px;
-    padding: 20px;
-    background: white;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-}
-.sidebar label {
-    font-weight: bold;
-    display: block;
-    margin-top: 15px;
-}
-.sidebar select {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
+/* Filters section */
+#filters {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
-/* Main Content */
-.content {
-    flex-grow: 1;
-    padding: 20px;
+/* Sort container - Aligns right */
+#sort-container {
+    margin-left: auto;
 }
 
-/* Sorting Dropdown */
-.sort-container {
-    margin-bottom: 15px;
-}
-.sort-container select {
-    padding: 8px;
+/* Remove select box styling */
+select {
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: inherit; /* Matches text color */
+    cursor: pointer;
 }
 
-/* Records Grid */
+/* Remove select focus outline */
+select:focus {
+    outline: none;
+}
+
+/* Labels styling */
+label {
+    font-weight: normal;
+    font-size: 16px;
+    margin-right: 5px;
+    color: inherit;
+}
+
+/* Records Grid - Seamless Layout */
 .records-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 20px;
+    padding: 20px;
 }
 
-/* Album Cards */
+/* Album Cards - No Box, Only Essential Styling */
 .album {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     padding: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+.album:hover {
+    transform: scale(1.02); /* Subtle hover effect */
+    cursor: pointer;
 }
 .album img {
     width: 100%;
-    border-radius: 8px;
+    border-radius: 5px;
 }
 .album p {
     font-size: 14px;
     margin-top: 5px;
+    color: #333; /* Ensures text is readable */
+}
+
+/* Main Album Container */
+.album-container {
+    display: flex; /* Enables flexbox */
+    align-items: center; /* Aligns items vertically */
+    justify-content: center; /* Centers content */
+    gap: 30px; /* Adds spacing between album cover & info */
+    max-width: 900px; /* Adjust based on preference */
+    margin: 50px auto; /* Centers container on page */
+    padding: 20px;
+}
+
+/* Album Cover - Left Side */
+.album-cover {
+    width: 50%; /* Takes half of the container */
+    max-width: 350px; /* Prevents it from being too large */
+}
+
+.album-cover img {
+    width: 100%; /* Makes image responsive */
+    border-radius: 8px; /* Optional: Rounded corners */
+}
+
+/* Album Info - Right Side */
+.album-info {
+    width: 50%; /* Takes the other half */
+}
+
+.album-info h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.album-info h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.album-info p {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.blending-in { 
+    color: gray;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+.back-button {
+    display: block;
+    margin: 10px;
+    font-size: 18px;
+    text-decoration: none;
+    color: black;
+}
+
+.back-button:hover {
+    text-decoration: underline;
+}
+
+#search {
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    color: inherit; /* Matches text color */
+    padding: 8px 12px;
+    border-radius: 5px;
+    transition: all 0.2s ease-in-out;
+    width: 200px; /* Adjust width to match dropdowns */
+    border: 1px solid #ccc; /* Subtle border for contrast */
+}
+
+#search:focus {
+    outline: none;
+    border-color: black; /* Make it pop when focused */
+    background: #fff; /* Light background when typing */
 }

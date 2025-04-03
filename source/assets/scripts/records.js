@@ -1,26 +1,29 @@
 // Google Sheets API Key & Spreadsheet Info
 const sheetId = "15VjSorWmHU6y-fqLAmzEuog5aUUzXDk6a0rHsu9Mm50"; // Your Google Sheet ID
 const apiKey = "AIzaSyDOC1F4Wl_OjU4WTRtHEQHe0_QfIZbaiJc"; // Replace with your API Key
-const sheetName = "Records!A:H"; // Name of the tab
+const sheetName = "Media!A:I"; // Name of the tab
 
 // Google Sheets API URL
 const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
 
 let recordsData = []; // Store records
 
+// Fetch Records
 async function fetchRecords() {
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
         const records = data.values.slice(1); // Skip header row
         recordsData = records.map(record => ({
-            title: record[0],
-            artist: record[1],
-            releaseYear: parseInt(record[2]),
-            genres: record[3]?.split(", ").map(genre => genre.trim()) || [],
-            country: record[4],
-            location: record[6],
-            albumCoverUrl: record[7]
+            format: record[0],
+            title: record[1],
+            artist: record[2],
+            releaseYear: parseInt(record[3]),
+            genres: record[4]?.split(", ").map(genre => genre.trim()) || [],
+            country: record[5],
+            riyl: record[6],
+            location: record[7],
+            albumCoverUrl: record[8]
         }));
         populateFilters();
         displayRecords(recordsData);
@@ -29,26 +32,61 @@ async function fetchRecords() {
     }
 }
 
+// Display Records
+function displayRecords(records) {
+    const grid = document.getElementById("recordsGrid");
+    if (!grid) return; // Prevent errors if grid is not found
+
+    grid.innerHTML = ""; // Clear previous
+    records.forEach((record, index) => {
+        const albumDiv = document.createElement("div");
+        albumDiv.classList.add("album");
+        albumDiv.dataset.index = index; // Store index for retrieval
+
+        const img = document.createElement("img");
+        img.src = record.albumCoverUrl;
+        img.alt = `${record.title} - ${record.artist}`;
+        img.onerror = () => (img.src = "fallback.jpg");
+
+        const text = document.createElement("p");
+        text.textContent = `${record.title} - ${record.artist} (${record.releaseYear})`;
+
+        albumDiv.appendChild(img);
+        albumDiv.appendChild(text);
+        albumDiv.addEventListener("click", () => openAlbumDetails(index));
+
+        grid.appendChild(albumDiv);
+    });
+}
+
+// Open Album Details Page
+function openAlbumDetails(index) {
+    localStorage.setItem("selectedAlbum", JSON.stringify(recordsData[index]));
+    window.location.href = "album-details.html";
+}
 
 // Populate Filters
 function populateFilters() {
-    const genreSet = new Set(), decadeSet = new Set(), countrySet = new Set(), locationSet = new Set();
+    const formatSet = new Set(), genreSet = new Set(), decadeSet = new Set(), countrySet = new Set(), locationSet = new Set();
     recordsData.forEach(record => {
         record.genres.forEach(genre => genreSet.add(genre));
         decadeSet.add(Math.floor(record.releaseYear / 10) * 10);
         countrySet.add(record.country);
         locationSet.add(record.location);
+        formatSet.add(record.format);
     });
 
     populateDropdown("genre", genreSet);
     populateDropdown("decade", decadeSet, "s");
     populateDropdown("country", countrySet);
     populateDropdown("location", locationSet);
+    populateDropdown("format",formatSet);
 }
 
 // Populate Dropdown Helper
 function populateDropdown(id, values, suffix = "") {
     const select = document.getElementById(id);
+    if (!select) return; // Prevent errors if element not found
     values.forEach(value => {
         const option = document.createElement("option");
         option.value = value;
@@ -57,56 +95,40 @@ function populateDropdown(id, values, suffix = "") {
     });
 }
 
-// Display Records
-function displayRecords(records) {
-    const grid = document.getElementById("recordsGrid");
-    grid.innerHTML = ""; // Clear previous
-    records.forEach(({ title, artist, releaseYear, albumCoverUrl }) => {
-        const albumDiv = document.createElement("div");
-        albumDiv.classList.add("album");
-
-        const img = document.createElement("img");
-        img.src = albumCoverUrl;
-        img.alt = `${title} - ${artist}`;
-        img.onerror = () => (img.src = "fallback.jpg");
-
-        const text = document.createElement("p");
-        text.textContent = `${title} - ${artist} (${releaseYear})`;
-
-        albumDiv.appendChild(img);
-        albumDiv.appendChild(text);
-        grid.appendChild(albumDiv);
-    });
-}
-
-// Sorting & Filtering
-document.getElementById("sort").addEventListener("change", applyFilters);
-document.getElementById("genre").addEventListener("change", applyFilters);
-document.getElementById("decade").addEventListener("change", applyFilters);
-document.getElementById("country").addEventListener("change", applyFilters);
-document.getElementById("location").addEventListener("change", applyFilters);
-
+// Apply Filters
 function applyFilters() {
     let filtered = [...recordsData];
 
-    const genre = document.getElementById("genre").value;
-    const decade = document.getElementById("decade").value;
-    const country = document.getElementById("country").value;
-    const location = document.getElementById("location").value;
-    const sortBy = document.getElementById("sort").value;
+    const searchQuery = document.getElementById("search")?.value.toLowerCase();
+    const genre = document.getElementById("genre")?.value;
+    const decade = document.getElementById("decade")?.value;
+    const country = document.getElementById("country")?.value;
+    const location = document.getElementById("location")?.value;
+    const format = document.getElementById("format")?.value;
+    const sortBy = document.getElementById("sort")?.value;
 
-    // Filtering Logic
+
+    // Apply Search Filter (checks if searchQuery exists in title OR artist)
+    if (searchQuery) {
+        filtered = filtered.filter(record => 
+            record.title.toLowerCase().includes(searchQuery) || 
+            record.artist.toLowerCase().includes(searchQuery)
+        );
+    }
+
+    // Apply Other Filters
     if (genre) filtered = filtered.filter(record => record.genres.includes(genre));
     if (decade) filtered = filtered.filter(record => Math.floor(record.releaseYear / 10) * 10 == decade);
     if (country) filtered = filtered.filter(record => record.country === country);
     if (location) filtered = filtered.filter(record => record.location === location);
+    if (format) filtered = filtered.filter(record => record.format === format);
 
-    // Sorting Logic
+    // Apply Sorting
     filtered.sort((a, b) => {
         if (sortBy === "artist") return a.artist.localeCompare(b.artist);
         if (sortBy === "title") return a.title.localeCompare(b.title);
-        if (sortBy === "releaseYearAsc") return a.releaseYear - b.releaseYear;  // Oldest to Newest
-        if (sortBy === "releaseYearDesc") return b.releaseYear - a.releaseYear; // Newest to Oldest
+        if (sortBy === "releaseYearAsc") return a.releaseYear - b.releaseYear;
+        if (sortBy === "releaseYearDesc") return b.releaseYear - a.releaseYear;
         return 0;
     });
 
@@ -114,4 +136,20 @@ function applyFilters() {
 }
 
 
-fetchRecords();
+// Add Event Listeners After DOM Loads
+document.addEventListener("DOMContentLoaded", () => {
+    fetchRecords();
+    document.getElementById("sort")?.addEventListener("change", applyFilters);
+    document.getElementById("genre")?.addEventListener("change", applyFilters);
+    document.getElementById("decade")?.addEventListener("change", applyFilters);
+    document.getElementById("country")?.addEventListener("change", applyFilters);
+    document.getElementById("location")?.addEventListener("change", applyFilters);
+    document.getElementById("format")?.addEventListener("change",applyFilters);
+    document.getElementById("search")?.addEventListener("input", applyFilters);
+});
+
+let searchTimeout;
+document.getElementById("search")?.addEventListener("input", () => {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(applyFilters, 300); // Delay execution by 300ms
+});
