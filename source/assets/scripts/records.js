@@ -73,14 +73,13 @@ function sortAlphabetically(s) {
 
 // Populate Filters
 function populateFilters() {
-    const formatSet = new Set(), genreSet = new Set(), decadeSet = new Set(), countrySet = new Set(), locationSet = new Set(), similarSet = new Set();
+    const formatSet = new Set(), genreSet = new Set(), decadeSet = new Set(), countrySet = new Set(), locationSet = new Set();
     recordsData.forEach(record => {
         record.genres.forEach(genre => genreSet.add(genre));
         decadeSet.add(Math.floor(record.releaseYear / 10) * 10);
         countrySet.add(record.country);
         locationSet.add(record.location);
         formatSet.add(record.format);
-        record.riyl.forEach(similar => similarSet.add(similar));
     });
 
     // Clean up sets
@@ -89,10 +88,9 @@ function populateFilters() {
     // Populate
     populateDropdown("genre", genreSet);
     populateDropdown("decade", sortAlphabetically(decadeSet), "s");
-    populateDropdown("country", countrySet);
-    populateDropdown("location", locationSet);
+    populateDropdown("country", sortAlphabetically(countrySet));
+    populateDropdown("location", sortAlphabetically(locationSet));
     populateDropdown("format",formatSet);
-    populateDropdown("similar",sortAlphabetically(similarSet));
 }
 
 // Populate Dropdown Helper
@@ -117,10 +115,7 @@ function applyFilters() {
     const country = document.getElementById("country")?.value;
     const location = document.getElementById("location")?.value;
     const format = document.getElementById("format")?.value;
-    const similar = document.getElementById("similar")?.value;
     const sortBy = document.getElementById("sort")?.value;
-    
-
 
     // Apply Search Filter (checks if searchQuery exists in title OR artist)
     if (searchQuery) {
@@ -136,7 +131,6 @@ function applyFilters() {
     if (country) filtered = filtered.filter(record => record.country === country);
     if (location) filtered = filtered.filter(record => record.location === location);
     if (format) filtered = filtered.filter(record => record.format === format);
-    if (similar) filtered = filtered.filter(record => record.riyl.includes(similar));
 
     // Apply Sorting
     filtered.sort((a, b) => {
@@ -160,7 +154,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("country")?.addEventListener("change", applyFilters);
     document.getElementById("location")?.addEventListener("change", applyFilters);
     document.getElementById("format")?.addEventListener("change",applyFilters);
-    document.getElementById("similar")?.addEventListener("change",applyFilters);
     document.getElementById("search")?.addEventListener("input", applyFilters);
 });
 
