@@ -1,14 +1,9 @@
-async function fetchAlbumOfTheWeek() {
-    const sheetId = "15VjSorWmHU6y-fqLAmzEuog5aUUzXDk6a0rHsu9Mm50"; 
-    const apiKey = "AIzaSyDOC1F4Wl_OjU4WTRtHEQHe0_QfIZbaiJc"; 
-    const range = "Album of the Week!A:J";  
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
+/* async function fetchAlbumOfTheWeek() {
 
     try {
-        const response = await fetch(url);
+        const response = await fetch('/records.json');
         const data = await response.json();
 
-        console.log("Google Sheets API Response:", data);
 
         if (!data.values || data.values.length < 2) {
             throw new Error("No data found in the sheet or incorrect range.");
@@ -54,4 +49,4 @@ async function fetchAlbumOfTheWeek() {
     }
 }
 
-fetchAlbumOfTheWeek();
+fetchAlbumOfTheWeek(); */

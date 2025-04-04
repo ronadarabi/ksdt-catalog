@@ -1,29 +1,20 @@
-// Google Sheets API Key & Spreadsheet Info
-const sheetId = "15VjSorWmHU6y-fqLAmzEuog5aUUzXDk6a0rHsu9Mm50"; // Your Google Sheet ID
-const apiKey = "AIzaSyDOC1F4Wl_OjU4WTRtHEQHe0_QfIZbaiJc"; // Replace with your API Key
-const sheetName = "Media!A:I"; // Name of the tab
-
-// Google Sheets API URL
-const apiUrl = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
-
 let recordsRIYLData = []; // Store records
 
 // Fetch Records
 async function fetchRecords() {
     try {
-        const response = await fetch(apiUrl);
+        const response = await fetch('/records.json');
         const data = await response.json();
-        const records = data.values.slice(1); // Skip header row
-        recordsRIYLData = records.map(record => ({
-            format: record[0],
-            title: record[1],
-            artist: record[2],
-            releaseYear: parseInt(record[3]),
-            genres: record[4]?.split(", ").map(genre => genre.trim()) || [],
-            country: record[5],
-            riyl: record[6]?.split(", ").map(similar => similar.trim()) || [],
-            location: record[7],
-            albumCoverUrl: record[8]
+        recordsRIYLData = data.map(record => ({
+            format: record["Format"],  
+            title: record["Title"],     
+            artist: record["Artist"],   
+            releaseYear: parseInt(record["Release Year"]),   
+            genres: record["Genre(s)"]?.split(", ") || [],   
+            country: record["Country"],   
+            riyl: record["RIYL"]?.split(", ") || [],   
+            location: record["Location (Shelf)"],  
+            albumCoverUrl: record["Album Cover URL"]  
         }));
         displayRecords(recordsRIYLData);
     } catch (error) {
