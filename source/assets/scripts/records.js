@@ -3,7 +3,7 @@ let recordsData = []; // Store records
 // Fetch Records
 async function fetchRecords() {
     try {
-        const response = await fetch('/records.json');
+        const response = await fetch('/ksdt-catalog/records.json');
         const data = await response.json();
         recordsData = data.map(record => ({
             format: record["Format"],  

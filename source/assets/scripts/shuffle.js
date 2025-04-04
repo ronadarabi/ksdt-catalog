@@ -2,7 +2,7 @@ let recordsData = []; // Store records
 
 async function randomRecord() {
     try {
-        const response = await fetch('/records.json');
+        const response = await fetch('/ksdt-catalog/records.json');
         const records = await response.json();
 
         const randomIdx = Math.floor(Math.random() * (records.length));
